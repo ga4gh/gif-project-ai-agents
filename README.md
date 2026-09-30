@@ -111,7 +111,7 @@ Architecture and stack decisions are recorded as short notes in [`decisions/`](d
   - `ws:mcp-tools`: MCP servers and agent skills wrapping the registry, Data Connect/Beacon, DRS, TRS, WES/TES, and Passports
   - `ws:auth`: Passport/Visa flows and machine-to-machine delegation for agents acting on a researcher's behalf
   - `ws:sites`: bring up, register, and verify GA4GH services at participating sites; cross-site interoperability testing
-  - `ws:gaps`: API gap triage and the standards gap analysis (see [Tracking API gaps](#tracking-api-gaps))
+  - `ws:api-gaps`: API gap triage and the standards gap analysis (see [Tracking API gaps](#tracking-api-gaps))
   - `ws:docs-outreach`: reproducibility package, deployment docs, demos, community calls, and blog posts
 
   Good places to start:

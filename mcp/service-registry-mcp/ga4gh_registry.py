@@ -5,13 +5,6 @@ Wraps the GA4GH Service Registry API
 response inside a standardized envelope — data, source, trace, policy,
 errors, benchmark, provenance — so agent clients get one consistent,
 machine-readable contract regardless of which registry they query.
-
-This is a deliberately minimal first pass covering GA4GH GIF project
-issues #3-#5: the example lives in `mcp/`, ships a sample request/response
-pair (see `samples/`), and every tool returns all seven envelope fields.
-Elaborating any one field further — a typed error taxonomy, richer policy
-reasoning, retries, caller/telemetry provenance, etc. — is tracked in
-issues #6-#11 and beyond, not implemented here yet. See README.md.
 """
 
 from __future__ import annotations

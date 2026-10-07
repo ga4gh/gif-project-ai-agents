@@ -1,16 +1,6 @@
 # Service Registry MCP (example)
 
-An MCP server wrapping the [GA4GH Service Registry API](https://github.com/ga4gh/ga4gh-service-registry/blob/develop/service-registry.yaml), built for the `ws:mcp-tools` workstream (see issue [#1](https://github.com/ga4gh/gif-project-ai-agents/issues/1) and its sub-issues).
-
-## Scope
-
-This is a deliberately minimal first pass, covering exactly:
-
-- [#3](https://github.com/ga4gh/gif-project-ai-agents/issues/3) — a Service Registry MCP example lives under `mcp/`.
-- [#4](https://github.com/ga4gh/gif-project-ai-agents/issues/4) — a sample request and response payload (see [`samples/`](samples/)).
-- [#5](https://github.com/ga4gh/gif-project-ai-agents/issues/5) — every tool response includes all seven top-level envelope fields below.
-
-Each field is intentionally simple here — a single generic error type, one `allow`/`deny` decision, no retries, no caller/telemetry provenance. Elaborating any one of them further is tracked in separate follow-up issues: typed error taxonomy ([#6](https://github.com/ga4gh/gif-project-ai-agents/issues/6)), richer policy reasoning ([#7](https://github.com/ga4gh/gif-project-ai-agents/issues/7)), trace/timing/retries ([#8](https://github.com/ga4gh/gif-project-ai-agents/issues/8)), source detail ([#9](https://github.com/ga4gh/gif-project-ai-agents/issues/9)), provenance elements ([#10](https://github.com/ga4gh/gif-project-ai-agents/issues/10)), and benchmark conditionality ([#11](https://github.com/ga4gh/gif-project-ai-agents/issues/11)).
+An MCP server wrapping the [GA4GH Service Registry API](https://github.com/ga4gh/ga4gh-service-registry/blob/develop/service-registry.yaml).
 
 ## The response envelope
 
@@ -23,7 +13,7 @@ Every tool returns a single JSON string (so it survives as plain MCP tool output
 | `trace` | `request_id` and start/end timestamps + duration. |
 | `policy` | `allow` or `deny`, plus a machine-readable `reason.code` and a human-readable `reason.message`. |
 | `errors` | Array of typed error objects: `type`, `code`, `message`, `retryable`. Empty on success. |
-| `benchmark` | Reserved for a published benchmark reference; always `null` for now (see [#11](https://github.com/ga4gh/gif-project-ai-agents/issues/11)). |
+| `benchmark` | Reserved for a published benchmark reference; always `null` for now and [`evals/`](evals/)). |
 | `provenance` | `query_provenance` (what was asked), `response_provenance` (where/when the answer came from), and a response `timestamp`. |
 
 ## Tools
@@ -104,6 +94,13 @@ uv run pytest
 | `tests/test_get_registry_info.py` | `get_registry_info`: allow, deny (404, 500), `benchmark` always `null`, `registry_url` override, envelope shape |
 | `tests/test_samples.py` | Guards #4/#5 directly against the committed `samples/` files, not just inline mocks |
 
-## Credits
+## Evals
 
-Adapted from the `ga4gh-registry` server in [vsmalladi/ga4gh-mcp](https://github.com/vsmalladi/ga4gh-mcp/blob/main/servers/ga4gh_registry.py), updated to call the endpoints actually defined in [`service-registry.yaml`](https://github.com/ga4gh/ga4gh-service-registry/blob/develop/service-registry.yaml) (including the dedicated `/services/types` endpoint and the `service-info` schema's real field names) and to return the standardized envelope described above instead of a formatted text summary.
+[`evals/`](evals/evals.json) holds a small set of eval cases, in the spirit of an agent-skill eval suite: each one names the `tool` it exercises and has a `prompt`, `expected_output`, and optional `files`. `evals/run_evals.py` calls the real registry directly (unlike `tests/`, which mocks `_fetch`) using each case's `arguments`/`expect` as deterministic ground truth, and prints `prompt`/`expected_output` alongside the result for a human to sanity-check. This is prep for issue [#11](https://github.com/ga4gh/gif-project-ai-agents/issues/11). Run manually with:
+
+```bash
+uv run python evals/run_evals.py
+```
+
+**Running with an actual agent in the loop.** The runner above never has an LLM read `prompt` and decide what to call — it just executes the pinned `arguments` directly. To really exercise prompt → tool-call → answer, point an MCP-aware agent harness at this server (it already speaks standard stdio, the same way `tests/`/manual smoke tests connect to it) — Claude Code itself (register the server in `.mcp.json`, run `claude -p "<prompt>"` per eval and capture stdout), the Claude Agent SDK, or a small hand-rolled loop using the `anthropic` SDK plus `mcp.client.session.ClientSession` (fetch tool schemas from the server, convert to Claude's tool-use format, loop until Claude returns final text). Grading `expected_output` against that free-text response is then either a human reading both, or a second LLM call acting as judge. Not implemented here yet — it needs a new dependency, an API key, and non-deterministic judging, a meaningfully bigger lift than the current mocked/deterministic runner.
+

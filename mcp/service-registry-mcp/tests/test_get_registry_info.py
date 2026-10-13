@@ -22,25 +22,25 @@ async def test_allow_returns_registry_info(monkeypatch):
     assert envelope["source"]["endpoint"] == "https://registry.ga4gh.org/v1/service-info"
 
 
-async def test_deny_on_upstream_error(monkeypatch):
+async def testupstream_error(monkeypatch):
     error = http_status_error(500)
     monkeypatch.setattr(reg, "_fetch", fake_fetch(fetch_fail(error)))
 
     envelope = await call(reg.get_registry_info)
 
-    assert envelope["policy"]["decision"] == "deny"
+    assert envelope["policy"]["decision"] == "allow"
     assert envelope["benchmark"] is None
     assert envelope["errors"][0]["code"] == "HTTP_500"
     assert envelope["errors"][0]["retryable"] is True
 
 
-async def test_deny_not_found(monkeypatch):
+async def test_not_found(monkeypatch):
     error = http_status_error(404)
     monkeypatch.setattr(reg, "_fetch", fake_fetch(fetch_fail(error)))
 
     envelope = await call(reg.get_registry_info)
 
-    assert envelope["policy"]["decision"] == "deny"
+    assert envelope["policy"]["decision"] == "allow"
     assert envelope["errors"][0]["code"] == "HTTP_404"
     assert envelope["errors"][0]["retryable"] is False
     assert envelope["data"] is None

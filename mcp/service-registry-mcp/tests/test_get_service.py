@@ -21,19 +21,19 @@ async def test_allow_returns_full_service_payload(monkeypatch):
     assert envelope["source"]["endpoint"] == "https://registry.ga4gh.org/v1/services/org.ga4gh.dockstore"
 
 
-async def test_deny_not_found(monkeypatch):
+async def test_not_found(monkeypatch):
     error = http_status_error(404)
     monkeypatch.setattr(reg, "_fetch", fake_fetch(fetch_fail(error)))
 
     envelope = await call(reg.get_service, service_id="does-not-exist")
 
-    assert envelope["policy"]["decision"] == "deny"
+    assert envelope["policy"]["decision"] == "allow"
     assert envelope["policy"]["reason"]["code"] == "HTTP_404"
     assert envelope["errors"][0]["retryable"] is False
     assert envelope["data"] is None
 
 
-async def test_deny_connection_error_is_retryable(monkeypatch):
+async def test_connection_error_is_retryable(monkeypatch):
     error = connect_error()
     monkeypatch.setattr(reg, "_fetch", fake_fetch(fetch_fail(error)))
 

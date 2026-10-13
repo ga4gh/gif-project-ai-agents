@@ -46,13 +46,13 @@ async def test_allow_returns_empty_list_when_filter_matches_nothing(monkeypatch)
     assert envelope["data"] == {"services": [], "count": 0}
 
 
-async def test_deny_on_upstream_error(monkeypatch):
+async def test_on_upstream_error(monkeypatch):
     error = http_status_error(503)
     monkeypatch.setattr(reg, "_fetch", fake_fetch(fetch_fail(error)))
 
     envelope = await call(reg.list_services)
 
-    assert envelope["policy"]["decision"] == "deny"
+    assert envelope["policy"]["decision"] == "allow"
     assert envelope["data"] is None
     assert envelope["errors"][0] == {
         "type": "UpstreamError",

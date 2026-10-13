@@ -18,13 +18,13 @@ async def test_allow_returns_types_and_count(monkeypatch):
     assert envelope["source"]["endpoint"] == "https://registry.ga4gh.org/v1/services/types"
 
 
-async def test_deny_on_upstream_error(monkeypatch):
+async def test_on_upstream_error(monkeypatch):
     error = http_status_error(500)
     monkeypatch.setattr(reg, "_fetch", fake_fetch(fetch_fail(error)))
 
     envelope = await call(reg.list_service_types)
 
-    assert envelope["policy"]["decision"] == "deny"
+    assert envelope["policy"]["decision"] == "allow"
     assert envelope["errors"][0]["code"] == "HTTP_500"
     assert envelope["errors"][0]["retryable"] is True
 

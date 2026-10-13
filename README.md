@@ -126,4 +126,9 @@ Architecture and stack decisions are recorded as short notes in [`decisions/`](d
 - **Driver Projects:** joining as a site means bringing up the node-in-a-box on a VM that the coordinator can reach, registering your synthetic partition, and being available for a coordinated training run. We'll publish a one-page "what we need from you" with the M4 runbook.
 - **Sync:** slack channel #gif-ga4gh-agents, as well as a bi-weekly cadance in the AI WS and Day-to-day discussion happens in GitHub issues.
 
+## AI Disclosure
+
+Artificial intelligence tools, including large language models (LLMs), were used during the development of this project to support writing, clarify technical concepts, and assist in generating code snippets. These tools served as an aid for idea refinement, debugging, and improving the readability of explanations and documentation. All AI-generated text and code were thoroughly reviewed, verified for correctness, and understood in full before being incorporated into this work. The responsibility for all final decisions, interpretations, and implementations remains solely with the contributors.
+
+
 

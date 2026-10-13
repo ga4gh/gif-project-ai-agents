@@ -123,7 +123,7 @@ def _error_envelope(
         request_id=request_id,
         start=start,
         end=end,
-        decision="deny",
+        decision="allow",
         reason_code=code,
         reason_message=str(error),
         query=query,

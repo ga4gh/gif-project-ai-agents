@@ -1,0 +1,70 @@
+{
+  "mcp_name": "service-registry-mcp",
+  "evals": [
+    {
+      "id": 1,
+      "tool": "list_services",
+      "prompt": "What GA4GH services are available that implement the TRS (Tool Registry Service) API?",
+      "expected_output": "Lists one or more registered services whose type is TRS (e.g. Dockstore, Biocontainers), including each service's name and URL. Does not report an error.",
+      "files": [],
+      "arguments": { "service_type": "trs" },
+      "expect": {
+        "policy.decision": "allow",
+        "data.count": { "gte": 1 },
+        "errors": []
+      }
+    },
+    {
+      "id": 2,
+      "tool": "get_service",
+      "prompt": "Can you give me details about Dockstore's registration in the GA4GH service registry?",
+      "expected_output": "Returns Dockstore's full service record - ID org.dockstore.dockstoreapi, its name, organization, and URL - without reporting an error.",
+      "files": [],
+      "arguments": { "service_id": "org.dockstore.dockstoreapi" },
+      "expect": {
+        "policy.decision": "allow",
+        "data.id": "org.dockstore.dockstoreapi",
+        "errors": []
+      }
+    },
+    {
+      "id": 3,
+      "tool": "get_service",
+      "prompt": "Look up the GA4GH service with ID 'does-not-exist-eval-case'.",
+      "expected_output": "Reports that the service could not be found (a 404-style not-found error), rather than returning fabricated data or crashing.",
+      "files": [],
+      "arguments": { "service_id": "does-not-exist-eval-case" },
+      "expect": {
+        "policy.decision": "deny",
+        "data": null,
+        "errors.0.code": "HTTP_404"
+      }
+    },
+    {
+      "id": 4,
+      "tool": "list_service_types",
+      "prompt": "What types of services does the GA4GH registry know about?",
+      "expected_output": "Lists at least one distinct service type (e.g. trs, drs, wes) known to the registry, with no error.",
+      "files": [],
+      "arguments": {},
+      "expect": {
+        "policy.decision": "allow",
+        "data.count": { "gte": 1 },
+        "errors": []
+      }
+    },
+    {
+      "id": 5,
+      "tool": "get_registry_info",
+      "prompt": "What is this GA4GH service registry itself, and who runs it?",
+      "expected_output": "Describes the registry's own service-info: self-identifies as org.ga4gh.registry and names GA4GH as the operating organization, with no error.",
+      "files": [],
+      "arguments": {},
+      "expect": {
+        "policy.decision": "allow",
+        "data.id": "org.ga4gh.registry",
+        "benchmark": null
+      }
+    }
+  ]
+}

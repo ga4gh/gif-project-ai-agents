@@ -41,7 +41,8 @@ Together, these form the GA4GH Cloud/Discovery Work Stream toolkit: Service Regi
 
 At least two end-to-end scenarios will be developed and executed. These are candidates; the group will confirm and refine them in Phase 1.
 
-![Architecture](docs/architecture.png)
+![Architecture](architecture/architecture.png)
+
 
 ### Scenario 1: Federated Cohort Query and Variant Analysis
 
@@ -63,6 +64,8 @@ Agent workflow:
 - **Tool resolution** — resolve the GATK pipeline from Dockstore via TRS, obtaining a versioned, checksummed WDL descriptor
 - **Authorization** — obtain cross-site Passport visas letting the compute job at site A pull input data from site B's DRS server
 - **Execution** — submit the WDL workflow to site A's WES endpoint, with DRS URIs pointing at site B's data; monitor and retrieve results
+
+Further list of [Senarios](docs/senarios)
 
 ### Additional scenarios
 

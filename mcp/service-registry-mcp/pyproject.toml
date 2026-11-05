@@ -1,0 +1,24 @@
+[project]
+name = "service-registry-mcp"
+version = "0.1.0"
+description = "GA4GH Service Registry MCP example with a standardized response envelope"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=2.0.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+]
+
+[project.scripts]
+service-registry-mcp = "ga4gh_registry:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+asyncio_mode = "auto"

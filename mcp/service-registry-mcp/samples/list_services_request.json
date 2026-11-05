@@ -1,0 +1,6 @@
+{
+  "tool": "list_services",
+  "arguments": {
+    "service_type": "trs"
+  }
+}

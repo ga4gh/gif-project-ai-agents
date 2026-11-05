@@ -1,0 +1,36 @@
+name: Service Registry MCP tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "mcp/service-registry-mcp/**"
+      - ".github/workflows/test-service-registry-mcp.yml"
+  pull_request:
+    paths:
+      - "mcp/service-registry-mcp/**"
+      - ".github/workflows/test-service-registry-mcp.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mcp/service-registry-mcp
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: mcp/service-registry-mcp/uv.lock
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync --extra test
+
+      - name: Run tests
+        run: uv run pytest -v

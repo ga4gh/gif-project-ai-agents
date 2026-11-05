@@ -1,0 +1,44 @@
+{
+  "data": {
+    "services": [
+      {
+        "id": "org.ga4gh.dockstore",
+        "name": "Dockstore",
+        "type": { "group": "org.ga4gh", "artifact": "trs", "version": "2.0.0" },
+        "organization": { "name": "Dockstore Team", "url": "https://dockstore.org" },
+        "url": "https://dockstore.org/api/ga4gh/trs/v2"
+      }
+    ],
+    "count": 1
+  },
+  "source": {
+    "endpoint": "https://registry.ga4gh.org/v1/services",
+    "version": "1.0.0"
+  },
+  "trace": {
+    "request_id": "req-5f3a9c2e1b04",
+    "timing": {
+      "start": "2026-09-14T12:00:00.000Z",
+      "end": "2026-09-14T12:00:00.420Z",
+      "duration_ms": 420
+    }
+  },
+  "policy": {
+    "decision": "allow",
+    "reason": { "code": "POLICY_OK", "message": "Request allowed." }
+  },
+  "errors": [],
+  "benchmark": null,
+  "provenance": {
+    "query_provenance": {
+      "operation": "getServices",
+      "registry_url": "https://registry.ga4gh.org/v1",
+      "service_type": "trs"
+    },
+    "response_provenance": {
+      "source_endpoint": "https://registry.ga4gh.org/v1/services",
+      "retrieved_at": "2026-09-14T12:00:00.420Z"
+    },
+    "timestamp": "2026-09-14T12:00:00.421Z"
+  }
+}
